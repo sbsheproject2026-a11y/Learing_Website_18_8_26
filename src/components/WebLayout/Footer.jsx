@@ -24,7 +24,7 @@ function Footer() {
                                 </div>
                             </div>
                             <div className="col-md-6 mb-5">
-                                <h5 className="text-primary text-uppercase mb-4" style={{ letterSpacing: "5px" }}>Our Courses</h5>
+                                <h5 className="text-primary text-uppercase mb-4" style={{ letterSpacing: "5px" }}>Usefull Links</h5>
                                 <div className="d-flex flex-column justify-content-start">
                                     <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>About</Link>
                                     <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Syllabus</Link>
@@ -40,7 +40,7 @@ function Footer() {
                     </div>
                     <div className="col-lg-5 col-md-12 mb-5">
                         <h5 className="text-primary text-uppercase mb-4" style={{ letterSpacing: "5px" }}>Newsletter</h5>
-                        <p>Shaheed Bhagat Singh was not only a great revolutionary but also a strong supporter of education, social awareness, and the well-being of society. He believed that education and good health were essential for building a strong and progressive nation. His ideas continue to inspire young people to gain knowledge, think critically, and contribute to the development of the country.</p>
+                        <p>Shaheed Bhagat Singh inspired young minds through his vision of education, awareness, and social progress. His ideas continue to encourage knowledge, critical thinking, and service to the nation.</p>
                         <div className="w-100">
                             <div className="input-group">
                                 <input type="text" className="form-control border-light" style={{ padding: "30px" }} placeholder="Your Email Address" />
@@ -55,7 +55,7 @@ function Footer() {
             <div className="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style={{ borderColor: "rgba(256, 256, 256, .1) !important" }}>
                 <div className="row">
                     <div className="col-lg-8 text-center text-md-left mb-3 mb-md-0">
-                        <p className="m-0 text-white">&copy; <a href="#">shaheed bhagat singh health and education</a>. All Rights Reserved.
+                        <p className="m-0 text-white">&copy; <a href="#">Shaheed Bhagat Singh Health and Education</a>. All Rights Reserved.
 
 
                             Designed by <a href="#"> </a>

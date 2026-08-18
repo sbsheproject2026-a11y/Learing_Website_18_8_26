@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getDepartments } from './CourseData';
+import { getDepartments } from './CourseServiceData';
 import { Link } from 'react-router-dom';
 import Course from './Course';
 
@@ -265,7 +265,8 @@ function Home() {
 
 
                             </p>
-                            <a href="" className="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Learn More</a>
+                            {/* <a href="" className="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Learn More</a>
+                        */}
                         </div>
 
 

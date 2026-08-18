@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getDepartments } from './CourseData';
+import { getDepartments } from './CourseServiceData';
 
 function Course() {
     const [data, setData] = useState([]);

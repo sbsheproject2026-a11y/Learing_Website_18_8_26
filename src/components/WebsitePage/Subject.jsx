@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
  
 import { useParams } from "react-router-dom";
-import { getSubjects } from "./CourseData";
+import { getSubjects } from "./CourseServiceData";
 
 function Subject() {
       const { slug } = useParams();

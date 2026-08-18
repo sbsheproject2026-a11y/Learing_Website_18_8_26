@@ -51,7 +51,8 @@ function Header() {
                                     <Link to="/student-support" className="nav-item nav-link">Placement</Link>
                                     <Link to="/news-events" className="nav-item nav-link">News/Event</Link>
                                     <Link to="https://sbshe.in/Rollno-Verification.aspx" className="nav-item nav-link">Result</Link>
-                                   <Link to="/contact-us" className="nav-item nav-link">Contact</Link>
+                                    <Link to="/contact-us" className="nav-item nav-link">Contact</Link>
+                                  
                                 </div>
                                
                             </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCourses } from "./CourseData";
+import { createUser, getCourses } from "./CourseServiceData";
 import { Link, useParams } from "react-router-dom";
 
 function CourseDeails() {
@@ -34,16 +34,7 @@ function CourseDeails() {
 
     const [showApplyModal, setShowApplyModal] = useState(false);
 
-    const [applyForm, setApplyForm] = useState({
-        name: "",
-        fatherName: "",
-        mobile: "",
-        address: "",
-        email: "",
-        copyType: "1",
-        Course: "",
-        courseId: "",
-    });
+
 
     useEffect(() => {
         if (slug) {
@@ -64,7 +55,34 @@ function CourseDeails() {
         }
     };
 
+    const [applyForm, setApplyForm] = useState({
+        name: "",
+        father_name: "",
+        email: "",
+        phone_number: "",
+        address: "",
+        pincode: "",
+        copy_type: "1",
+        course_name: "",
+        course_id: "",
+    });
 
+
+   const CreateUser = async (applyForm) => {
+    try {
+        console.log("Sending Data:", applyForm);
+
+        const result = await createUser(applyForm);
+
+        console.log("Saved Successfully:", result);
+
+           alert("Application submitted successfully!");
+        setShowApplyModal(false);
+
+    } catch (error) {
+        console.log("API Error:", error.response?.data || error);
+    }
+};
 
 
 
@@ -310,14 +328,14 @@ function CourseDeails() {
                                                     onClick={() => {
                                                         setApplyForm({
                                                             ...applyForm,
-                                                            Course: course.name,
-                                                            courseId: course.id,
+                                                            course_name: course.name,
+                                                            course_id: course.id,
                                                         });
 
                                                         setShowApplyModal(true);
                                                     }}
                                                 >
-                                                    Apply
+                                                    Buy Now
                                                 </button>
 
 
@@ -490,13 +508,13 @@ function CourseDeails() {
                                         Close
                                     </button>
 
-                                    <button
+                                    {/* <button
                                         type="button"
                                         className="btn btn-success btn-sm mx-2"
                                         onClick={() => setShowApplyModal(true)}
                                     >
                                         Apply
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
 
@@ -534,274 +552,301 @@ function CourseDeails() {
 
 
             {/* Books  ko apply krne k liya  */}
-            {showApplyModal && (
+           
+           {showApplyModal && (
+    <div
+        className="modal fade show"
+        style={{
+            display: "block",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+        }}
+        tabIndex="-1"
+    >
+        <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div className="modal-content">
+
+                {/* Header */}
+                <div className="modal-header">
+                    <h5 className="modal-title">
+                        Buy Now for Book
+                    </h5>
+
+                    <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => setShowApplyModal(false)}
+                    >
+                        Close
+                    </button>
+                </div>
+
+                {/* Body */}
                 <div
-                    className="modal fade show"
+                    className="modal-body"
                     style={{
-                        display: "block",
-                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        maxHeight: "70vh",
+                        overflowY: "auto",
                     }}
-                    tabIndex="-1"
                 >
-                    <div className="modal-dialog modal-lg modal-dialog-centered">
-                        <div className="modal-content">
+                    <div className="row">
 
-                            {/* Header */}
-                            <div className="modal-header">
-                                <h5 className="modal-title">
-                                    Apply for Book
-                                </h5>
+                        {/* Course ID - Hidden */}
+                        <input
+                            type="hidden"
+                            value={applyForm.course_id}
+                            readOnly
+                        />
 
-                                <button
-                                    type="button"
-                                    className="btn btn-info"
-                                    onClick={() => setShowApplyModal(false)}
-                                >
-                                    Close
-                                </button>
-                            </div>
+                        {/* Course */}
+                        <div className="col-12 mb-3">
+                            <div className="row align-items-center">
 
-                            {/* Body */}
-                            <div className="modal-body">
-
-                                <div className="row">
-                                    {/* CourseId */}
-                                    <div className="col-md-6 mb-3" hidden>
-                                        <label className="form-label">
-                                            CourseId{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={applyForm.courseId}
-                                            readOnly
-                                        />
-                                    </div>
-
-                                    {/* Course */}
-                                    <div className="col-md-12 mb-3">
-                                        <div className="row align-items-center">
-
-                                            <div className="col-md-2">
-                                                <label className="form-label mb-0">
-                                                    Course <span className="text-danger">*</span>
-                                                </label>
-                                            </div>
-
-                                            <div className="col-md-10">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={applyForm.Course}
-                                                    readOnly
-                                                />
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-
-                                    {/* Name */}
-                                    <div className="col-md-6 mb-3">
-                                        <label className="form-label">
-                                            Name <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Enter Name"
-                                            value={applyForm.name}
-                                            onChange={(e) =>
-                                                setApplyForm({
-                                                    ...applyForm,
-                                                    name: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-
-                                    {/* Father Name */}
-                                    <div className="col-md-6 mb-3">
-                                        <label className="form-label">
-                                            Father Name{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Enter Father Name"
-                                            value={applyForm.fatherName}
-                                            onChange={(e) =>
-                                                setApplyForm({
-                                                    ...applyForm,
-                                                    fatherName: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-
-                                    {/* Mobile */}
-                                    <div className="col-md-6 mb-3">
-                                        <label className="form-label">
-                                            Mobile Number{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="tel"
-                                            className="form-control"
-                                            placeholder="Enter Mobile Number"
-                                            value={applyForm.mobile}
-                                            onChange={(e) =>
-                                                setApplyForm({
-                                                    ...applyForm,
-                                                    mobile: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-
-                                    {/* Email */}
-                                    <div className="col-md-6 mb-3">
-                                        <label className="form-label">
-                                            Email{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            placeholder="Enter Email"
-                                            value={applyForm.email}
-                                            onChange={(e) =>
-                                                setApplyForm({
-                                                    ...applyForm,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-
-
-                                    {/* Address */}
-                                    <div className="col-md-12 mb-3">
-                                        <label className="form-label">
-                                            Address{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Enter Full Address"
-                                            value={applyForm.address}
-                                            onChange={(e) =>
-                                                setApplyForm({
-                                                    ...applyForm,
-                                                    address: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-
-                                    {/* Copy Type */}
-                                    <div className="col-md-6 mb-3">
-                                        <label className="form-label d-block">
-                                            Select Copy Type{" "}
-                                            <span className="text-danger">*</span>
-                                        </label>
-
-                                        <div className="d-flex gap-4">
-
-                                            {/* Soft Copy */}
-                                            <div className="form-check mx-2">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="radio"
-                                                    name="copyType"
-                                                    id="softCopy"
-                                                    value="1"
-                                                    checked={applyForm.copyType === "1"}
-                                                    onChange={(e) =>
-                                                        setApplyForm({
-                                                            ...applyForm,
-                                                            copyType: e.target.value,
-                                                        })
-                                                    }
-                                                />
-
-                                                <label
-                                                    className="form-check-label"
-                                                    htmlFor="softCopy"
-                                                >
-                                                    Soft Copy
-                                                </label>
-                                            </div>
-
-                                            {/* Hard Copy */}
-                                            <div className="form-check mx-2">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="radio"
-                                                    name="copyType"
-                                                    id="hardCopy"
-                                                    value="2"
-                                                    checked={applyForm.copyType === "2"}
-                                                    onChange={(e) =>
-                                                        setApplyForm({
-                                                            ...applyForm,
-                                                            copyType: e.target.value,
-                                                        })
-                                                    }
-                                                />
-
-                                                <label
-                                                    className="form-check-label"
-                                                    htmlFor="hardCopy"
-                                                >
-                                                    Hard Copy
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
+                                <div className="col-12 col-md-2 mb-2 mb-md-0">
+                                    <label className="form-label mb-0">
+                                        Course{" "}
+                                        <span className="text-danger">*</span>
+                                    </label>
                                 </div>
-                            </div>
 
-                            {/* Footer */}
-                            <div className="modal-footer">
-
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={() => setShowApplyModal(false)}
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="btn btn-success"
-                                    onClick={() => {
-                                        console.log("Application Data:", applyForm);
-                                        // API call yahan kar sakte ho
-                                    }}
-                                >
-                                    Submit Application
-                                </button>
+                                <div className="col-12 col-md-10">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={applyForm.course_name
+}
+                                        readOnly
+                                    />
+                                </div>
 
                             </div>
-
                         </div>
+
+                        {/* Name */}
+                        <div className="col-12 col-md-6 mb-3">
+                            <label className="form-label">
+                                Name{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Name"
+                                value={applyForm.name}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        name: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Father Name */}
+                        <div className="col-12 col-md-6 mb-3">
+                            <label className="form-label">
+                                Father Name{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Father Name"
+                                value={applyForm.father_name}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        father_name: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Mobile */}
+                        <div className="col-12 col-md-6 mb-3">
+                            <label className="form-label">
+                                Mobile Number{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="tel"
+                                className="form-control"
+                                placeholder="Enter Mobile Number"
+                                value={applyForm.phone_number}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        phone_number: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Email */}
+                        <div className="col-12 col-md-6 mb-3">
+                            <label className="form-label">
+                                Email{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                value={applyForm.email}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        email: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Address */}
+                        <div className="col-12 col-md-8 mb-3">
+                            <label className="form-label">
+                                Address{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Full Address"
+                                value={applyForm.address}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        address: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Pincode */}
+                        <div className="col-12 col-md-4 mb-3">
+                            <label className="form-label">
+                                Pincode{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Pincode"
+                                value={applyForm.pincode}
+                                onChange={(e) =>
+                                    setApplyForm({
+                                        ...applyForm,
+                                        pincode: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        {/* Copy Type */}
+                        <div className="col-12 mb-3">
+
+                            <label className="form-label d-block">
+                                Select Copy Type{" "}
+                                <span className="text-danger">*</span>
+                            </label>
+
+                            <div className="d-flex flex-wrap gap-3">
+
+                                {/* Soft Copy */}
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="copyType"
+                                        id="softCopy"
+                                        value="1"
+                                        checked={
+                                            applyForm.copy_type === "1"
+                                        }
+                                        onChange={(e) =>
+                                            setApplyForm({
+                                                ...applyForm,
+                                                copy_type: e.target.value,
+                                            })
+                                        }
+                                    />
+
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="softCopy"
+                                    >
+                                        Soft Copy
+                                    </label>
+                                </div>
+
+                                {/* Hard Copy */}
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="copyType"
+                                        id="hardCopy"
+                                        value="2"
+                                        checked={
+                                            applyForm.copy_type === "2"
+                                        }
+                                        onChange={(e) =>
+                                            setApplyForm({
+                                                ...applyForm,
+                                                copy_type: e.target.value,
+                                            })
+                                        }
+                                    />
+
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="hardCopy"
+                                    >
+                                        Hard Copy
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            )}
+
+                {/* Footer */}
+                <div className="modal-footer">
+
+                    <div className="d-flex flex-column flex-sm-row justify-content-end gap-2 w-100">
+
+                        <button
+                            type="button"
+                            className="btn btn-success mx-3"
+                           onClick={() => CreateUser(applyForm)}
+>
+                            Submit Application
+                        </button>
+
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => setShowApplyModal(false)}
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+)}
+
 
         </>
     );
