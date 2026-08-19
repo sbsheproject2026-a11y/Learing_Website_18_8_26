@@ -13,7 +13,7 @@ export const getCourses = async (slug) => {
     return response.data.results;
 };
 export const getSubjects = async (slug) => {
-    const response = await api.get(`/materials/?course=${slug}`);
+    const response = await api.get(`/materials/subjects/?course=${slug}`);
 
     return response.data.results;
 };

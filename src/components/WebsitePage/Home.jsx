@@ -2,31 +2,65 @@ import React, { useEffect, useState } from 'react'
 import { getDepartments } from './CourseServiceData';
 import { Link } from 'react-router-dom';
 import Course from './Course';
+import { getWebsiteContent } from './HomeService';
 
 function Home() {
 
     const [dataepartments, setDataepartments] = useState([]);
+    const [sliders, setSliders] = useState([]);
 
     useEffect(() => {
-        loadDepartments();
+        loadPageData();
     }, []);
+
+    const loadPageData = async () => {
+        try {
+            const [slidersData, aboutUsData, coursesData] =
+                await Promise.all([
+                    getWebsiteContent(8),   // Slider
+                    // getWebsiteContent(9),   // About Us
+                    // getWebsiteContent(10),  // Courses
+                ]);
+
+            setSliders(slidersData);
+            // setAboutUs(aboutUsData);
+            // setCourses(coursesData);
+
+        } catch (error) {
+            console.log("Page data error:", error);
+        }
+    };
 
     const [activeSlide, setActiveSlide] = useState(0);
 
-    const slides = [
-        "/assets/img/carousel-1.jpg",
-        "/assets/img/carousel-2.jpg",
-        "/assets/img/carousel-3.jpg",
-
-    ];
+    const slides = sliders
+        .filter(item => item.is_active && item.file)
+        .map(item => item.file);
 
     useEffect(() => {
+        setActiveSlide(0);
+    }, [sliders]);
+
+    useEffect(() => {
+
+        if (slides.length <= 1) {
+            return;
+        }
+
         const interval = setInterval(() => {
-            setActiveSlide((prev) => (prev + 1) % slides.length);
-        }, 8000); // 3 seconds
+
+            setActiveSlide(prev => {
+                return (prev + 1) % slides.length;
+            });
+
+        }, 8000);
 
         return () => clearInterval(interval);
-    }, []);
+
+    }, [slides]);
+
+
+
 
     const loadDepartments = async () => {
         try {
@@ -71,7 +105,8 @@ function Home() {
                                     src={image}
                                     alt={`Slide ${index + 1}`}
                                     style={{
-                                        minHeight: "300px",
+                                        height: "700px",
+                                        width: "100%",
                                         objectFit: "cover",
                                     }}
                                 />
@@ -278,7 +313,7 @@ function Home() {
             </div>
 
             {/* <!-- Registration Start --> */}
-            <div className="container-fluid bg-registration py-5" style={{ margin: "90px 0" }}>
+            <div className="container-fluid bg-registration py-5" style={{ margin: "90px 0" }}  >
                 <div className="container py-5">
                     <div className="row align-items-center">
                         <div className="col-lg-7 mb-5 mb-lg-0">
@@ -323,6 +358,7 @@ function Home() {
                                                 <option value="3">Course 3</option>
                                             </select>
                                         </div>
+                                        
                                         <div>
                                             <button className="btn btn-dark btn-block border-0 py-3" type="submit">Sign Up Now</button>
                                         </div>
@@ -405,7 +441,7 @@ function Home() {
                             </div>
                         </div>
 
-                        
+
                         <div className="col-lg-4 mb-4">
                             <div className="blog-item position-relative overflow-hidden rounded mb-2">
 

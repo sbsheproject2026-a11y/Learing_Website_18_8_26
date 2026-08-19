@@ -198,9 +198,10 @@ function Subject() {
                                     <th>Subject Code</th>
                                     <th>Subject Name</th>
                                      <th>Sem/Year</th>
-                                    <th>Syllabus</th>
+                                     <th>Documents</th>
+                                    {/* <th>Syllabus</th>
                                     <th>Assessment</th>
-                                    <th>Question Papers</th>
+                                    <th>Question Papers</th> */}
 
 
                                 </tr>
@@ -223,7 +224,7 @@ function Subject() {
                                             </td>
 
                                             <td>
-                                                {course.title}
+                                                {course.subject_name}
                                             </td>
 
                                             
@@ -232,34 +233,86 @@ function Subject() {
                                                 {course.academic_year_display}
                                             </td>
 
+<td>
+    <div className="row g-2">
 
-                                            <td>
+        {course.syllabus?.file?.trim() && (
+            <div className="col-md-4">
+                <button
+                    type="button"
+                    className="btn btn-primary btn-sm w-100"
+                    onClick={() =>
+                        window.open(course.syllabus.file, "_blank")
+                    }
+                >
+                    View Syllabus
+                </button>
+            </div>
+        )}
+
+        {course.assessment?.file?.trim() && (
+            <div className="col-md-4">
+                <button
+                    type="button"
+                    className="btn btn-primary btn-sm w-100"
+                    onClick={() =>
+                        window.open(course.assessment.file, "_blank")
+                    }
+                >
+                    View Assessment
+                </button>
+            </div>
+        )}
+
+        {course.question_paper?.file?.trim() && (
+            <div className="col-md-4">
+                <button
+                    type="button"
+                    className="btn btn-primary btn-sm w-100"
+                    onClick={() =>
+                        window.open(course.question_paper.file, "_blank")
+                    }
+                >
+                    Question Papers
+                </button>
+            </div>
+        )}
+
+    </div>
+</td>
+                                            {/* <td>
+                                                  {course.syllabus.file?.trim() && (
                                                 <button
                                                     type="button"
                                                     className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.file, "_blank")}
+                                                    onClick={() => window.open(course.syllabus.file, "_blank")}
                                                 >
                                                     View Syllabus
                                                 </button>
+                                                 )}
                                             </td>
                                             <td>
+                                                 {course.assessment.file?.trim() && (
                                                 <button
                                                     type="button"
                                                     className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.file, "_blank")}
+                                                    onClick={() => window.open(course.assessment.file, "_blank")}
                                                 >
                                                     View Assessment
                                                 </button>
+                                                 )}
                                             </td>
                                             <td>
+                                                {course.question_paper.file?.trim() && (
                                                 <button
                                                     type="button"
                                                     className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.file, "_blank")}
+                                                    onClick={() => window.open(course.question_paper.file, "_blank")}
                                                 >
                                                     Question Papers
                                                 </button>
-                                            </td>
+                                                )}
+                                            </td> */}
 
                                         </tr>
 
