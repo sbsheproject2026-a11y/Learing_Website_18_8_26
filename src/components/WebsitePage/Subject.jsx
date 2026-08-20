@@ -18,8 +18,8 @@ function Subject() {
             const result = await getSubjects(slug);
 
             setData(result.filter(
-        (item) => item.is_active === true
-    ));
+                (item) => item.is_active === true
+            ));
         } catch (error) {
             console.log(error);
         }
@@ -111,346 +111,879 @@ function Subject() {
 
     return (
         <>
-            <div className="container-fluid py-5">
-                <div className="container pt-5 pb-3">
+            <div className="container-fluid py-5 subject-section">
+    <div className="container pt-4 pb-4">
 
-                    {/* =========================
-              HEADING
-          ========================== */}
-                    <div className="text-center mb-5">
-                        <h5
-                            className="text-primary text-uppercase mb-3"
-                            style={{ letterSpacing: "5px" }}
-                        >
-                            Subject
-                        </h5>
+        {/* =========================
+            PAGE HEADER
+        ========================== */}
+        <div className="text-center mb-5">
+            <div className="section-label">
+                SUBJECT
+            </div>
 
-                        <h1>Subject Details</h1>
-                    </div>
+            <h1 className="subject-heading">
+                Subject Details
+            </h1>
 
-                    {/* =========================
-              TOP CONTROLS
-          ========================== */}
-                    <div className="row align-items-center mb-3">
+            <p className="subject-subtitle">
+                Explore subjects, syllabus, assessments and question papers
+            </p>
+        </div>
 
-                        {/* LEFT - SHOW RECORDS */}
-                        <div className="col-md-6 mb-3 mb-md-0">
-                            <div className="d-flex align-items-center">
 
-                                <span className="me-2">
-                                    Show
-                                </span>
+        {/* =========================
+            CONTROLS
+        ========================== */}
+        <div className="subject-toolbar">
 
-                                <select
-                                    className="form-select"
-                                    value={recordsPerPage}
-                                    onChange={handleRecordsChange}
-                                    style={{ width: "90px" }}
-                                >
-                                    <option value={10}>10</option>
-                                    <option value={25}>25</option>
-                                    <option value={50}>50</option>
-                                    <option value={100}>100</option>
-                                </select>
+            {/* Records */}
+            <div className="records-control">
+                <span>Show</span>
 
-                                <span className="ms-2">
-                                    entries
-                                </span>
+                <select
+                    className="records-select"
+                    value={recordsPerPage}
+                    onChange={handleRecordsChange}
+                >
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                </select>
 
-                            </div>
-                        </div>
+                <span>entries</span>
+            </div>
 
-                        {/* RIGHT - SEARCH */}
-                        <div className="col-md-6">
 
-                            <div className="d-flex justify-content-md-end">
+            {/* Search */}
+            <div className="search-box">
+                <i className="fa fa-search"></i>
 
-                                <div
-                                    className="input-group"
-                                    style={{ maxWidth: "250px" }}
-                                >
+                <input
+                    type="text"
+                    placeholder="Search subject..."
+                    value={search}
+                    onChange={handleSearch}
+                />
+            </div>
 
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Search..."
-                                        value={search}
-                                        onChange={handleSearch}
-                                        placeholder="Search"
-                                    />
+        </div>
 
-                                </div>
 
-                            </div>
+        {/* =========================
+            TABLE CARD
+        ========================== */}
+        <div className="subject-table-card">
 
-                        </div>
+            <div className="table-responsive">
 
-                    </div>
+                <table className="subject-table">
 
-                    {/* =========================
-              TABLE
-          ========================== */}
-                    <div className="table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="70">#</th>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                            <th>Sem / Year</th>
+                            <th>Documents</th>
+                        </tr>
+                    </thead>
 
-                        <table className="table table-bordered table-striped table-hover   align-middle">
 
-                            <thead className="table-primary">
-                                <tr>
-                                    <th>Sr. No.</th>
-                                    <th>Subject Code</th>
-                                    <th>Subject Name</th>
-                                    <th>Sem/Year</th>
-                                    <th>Documents</th>
-                                    {/* <th>Syllabus</th>
-                                    <th>Assessment</th>
-                                    <th>Question Papers</th> */}
+                    <tbody>
 
+                        {data?.length > 0 ? (
+
+                            data.map((course, index) => (
+
+                                <tr key={course.id}>
+
+                                    {/* Serial Number */}
+                                    <td>
+                                        <span className="serial-number">
+                                            {startIndex + index + 1}
+                                        </span>
+                                    </td>
+
+
+                                    {/* Subject Code */}
+                                    <td>
+                                        <span className="subject-code">
+                                            {course.subject_code || "-"}
+                                        </span>
+                                    </td>
+
+
+                                    {/* Subject Name */}
+                                    <td>
+                                        <div className="subject-name">
+                                            <div className="subject-icon">
+                                                <i className="fa fa-book"></i>
+                                            </div>
+
+                                            <span>
+                                                {course.subject_name || "-"}
+                                            </span>
+                                        </div>
+                                    </td>
+
+
+                                    {/* Semester / Year */}
+                                    <td>
+                                        <span className="academic-badge">
+                                            {course.academic_year_display || "-"}
+                                        </span>
+                                    </td>
+
+
+                                    {/* Documents */}
+                                    <td>
+
+                                        <div className="document-buttons">
+
+                                            {/* Syllabus */}
+                                            {course.syllabus?.file?.trim() && (
+
+                                                <button
+                                                    type="button"
+                                                    className="document-btn syllabus-btn"
+                                                    onClick={() =>
+                                                        window.open(
+                                                            course.syllabus.file,
+                                                            "_blank"
+                                                        )
+                                                    }
+                                                >
+                                                    <i className="fa fa-file-text mr-1"></i>
+                                                    <span>Syllabus</span>
+                                                </button>
+
+                                            )}
+
+
+                                            {/* Assessment */}
+                                            {course.assessment?.file?.trim() && (
+
+                                                <button
+                                                    type="button"
+                                                    className="document-btn assessment-btn"
+                                                    onClick={() =>
+                                                        window.open(
+                                                            course.assessment.file,
+                                                            "_blank"
+                                                        )
+                                                    }
+                                                >
+                                                    <i className="fa fa-check-square-o mr-1"></i>
+                                                    <span>Assessment</span>
+                                                </button>
+
+                                            )}
+
+
+                                            {/* Question Paper */}
+                                            {course.question_paper?.file?.trim() && (
+
+                                                <button
+                                                    type="button"
+                                                    className="document-btn question-btn"
+                                                    onClick={() =>
+                                                        window.open(
+                                                            course.question_paper.file,
+                                                            "_blank"
+                                                        )
+                                                    }
+                                                >
+                                                    <i className="fa fa-file-pdf-o mr-1"></i>
+                                                    <span>Question Paper</span>
+                                                </button>
+
+                                            )}
+
+
+                                            {/* No Documents */}
+                                            {!course.syllabus?.file?.trim() &&
+                                                !course.assessment?.file?.trim() &&
+                                                !course.question_paper?.file?.trim() && (
+
+                                                    <span className="no-document">
+                                                        No documents
+                                                    </span>
+
+                                                )}
+
+                                        </div>
+
+                                    </td>
 
                                 </tr>
-                            </thead>
 
-                            <tbody>
+                            ))
 
-                                {data.length > 0 ? (
+                        ) : (
 
-                                    data.map((course, index) => (
+                            <tr>
+                                <td
+                                    colSpan="5"
+                                    className="no-data"
+                                >
+                                    <div className="no-data-content">
+                                        <i className="fa fa-folder-open-o"></i>
 
-                                        <tr key={course.id}>
+                                        <h5>No Subjects Found</h5>
 
-                                            <td>
-                                                {startIndex + index + 1}
-                                            </td>
+                                        <p>
+                                            No subjects are available for this course.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
 
-                                            <td>
-                                                {course.subject_code}
-                                            </td>
+                        )}
 
-                                            <td>
-                                                {course.subject_name}
-                                            </td>
+                    </tbody>
 
+                </table>
 
-
-                                            <td>
-                                                {course.academic_year_display}
-                                            </td>
-
-                                            <td>
-                                                <div className="row g-2">
-
-                                                    {course.syllabus?.file?.trim() && (
-                                                        <div className="col-md-4">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary btn-sm w-100"
-                                                                onClick={() =>
-                                                                    window.open(course.syllabus.file, "_blank")
-                                                                }
-                                                            >
-                                                                View Syllabus
-                                                            </button>
-                                                        </div>
-                                                    )}
-
-                                                    {course.assessment?.file?.trim() && (
-                                                        <div className="col-md-4">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary btn-sm w-100"
-                                                                onClick={() =>
-                                                                    window.open(course.assessment.file, "_blank")
-                                                                }
-                                                            >
-                                                                View Assessment
-                                                            </button>
-                                                        </div>
-                                                    )}
-
-                                                    {course.question_paper?.file?.trim() && (
-                                                        <div className="col-md-4">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary btn-sm w-100"
-                                                                onClick={() =>
-                                                                    window.open(course.question_paper.file, "_blank")
-                                                                }
-                                                            >
-                                                                Question Papers
-                                                            </button>
-                                                        </div>
-                                                    )}
-
-                                                </div>
-                                            </td>
-                                            {/* <td>
-                                                  {course.syllabus.file?.trim() && (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.syllabus.file, "_blank")}
-                                                >
-                                                    View Syllabus
-                                                </button>
-                                                 )}
-                                            </td>
-                                            <td>
-                                                 {course.assessment.file?.trim() && (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.assessment.file, "_blank")}
-                                                >
-                                                    View Assessment
-                                                </button>
-                                                 )}
-                                            </td>
-                                            <td>
-                                                {course.question_paper.file?.trim() && (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary btn-sm"
-                                                    onClick={() => window.open(course.question_paper.file, "_blank")}
-                                                >
-                                                    Question Papers
-                                                </button>
-                                                )}
-                                            </td> */}
-
-                                        </tr>
-
-                                    ))
-
-                                ) : (
-
-                                    <tr>
-                                        <td
-                                            colSpan="8"
-                                            className="text-center py-4"
-                                        >
-                                            No courses found
-                                        </td>
-                                    </tr>
-
-                                )}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                    {/* =========================
-              BOTTOM PAGINATION
-          ========================== */}
-                    <div className="row align-items-center mt-3">
-
-                        {/* LEFT - RECORD INFO */}
-                        <div className="col-md-6 mb-3 mb-md-0">
-
-                            <span className="text-muted">
-
-                                Showing{" "}
-
-                                {filteredCourses.length > 0
-                                    ? startIndex + 1
-                                    : 0}
-
-                                {" "}to{" "}
-
-                                {endIndex}
-
-                                {" "}of{" "}
-
-                                {filteredCourses.length}
-
-                                {" "}entries
-
-                            </span>
-
-                        </div>
-
-                        {/* RIGHT - PAGINATION */}
-                        <div className="col-md-6">
-
-                            <nav>
-
-                                <ul className="pagination justify-content-md-end mb-0">
-
-                                    {/* PREVIOUS */}
-                                    <li
-                                        className={`page-item ${currentPage === 1
-                                            ? "disabled"
-                                            : ""
-                                            }`}
-                                    >
-
-                                        <button
-                                            className="page-link"
-                                            onClick={handlePrevious}
-                                            disabled={currentPage === 1}
-                                        >
-                                            Previous
-                                        </button>
-
-                                    </li>
-
-                                    {/* PAGE NUMBERS */}
-                                    {Array.from(
-                                        { length: totalPages },
-                                        (_, index) => index + 1
-                                    ).map((page) => (
-
-                                        <li
-                                            key={page}
-                                            className={`page-item ${currentPage === page
-                                                ? "active"
-                                                : ""
-                                                }`}
-                                        >
-
-                                            <button
-                                                className="page-link"
-                                                onClick={() =>
-                                                    setCurrentPage(page)
-                                                }
-                                            >
-                                                {page}
-                                            </button>
-
-                                        </li>
-
-                                    ))}
-
-                                    {/* NEXT */}
-                                    <li
-                                        className={`page-item ${currentPage === totalPages
-                                            ? "disabled"
-                                            : ""
-                                            }`}
-                                    >
-
-                                        <button
-                                            className="page-link"
-                                            onClick={handleNext}
-                                            disabled={
-                                                currentPage === totalPages
-                                            }
-                                        >
-                                            Next
-                                        </button>
-
-                                    </li>
-
-                                </ul>
-
-                            </nav>
-
-                        </div>
-
-                    </div>
-
-                </div>
             </div>
+
+        </div>
+
+
+        {/* =========================
+            BOTTOM
+        ========================== */}
+        <div className="subject-bottom">
+
+            {/* Record Information */}
+            <div className="record-info">
+
+                Showing{" "}
+
+                <strong>
+                    {filteredCourses.length > 0
+                        ? startIndex + 1
+                        : 0}
+                </strong>
+
+                {" "}to{" "}
+
+                <strong>
+                    {endIndex}
+                </strong>
+
+                {" "}of{" "}
+
+                <strong>
+                    {filteredCourses.length}
+                </strong>
+
+                {" "}entries
+
+            </div>
+
+
+            {/* Pagination */}
+            <nav>
+
+                <ul className="subject-pagination">
+
+                    {/* Previous */}
+                    <li
+                        className={
+                            currentPage === 1
+                                ? "disabled"
+                                : ""
+                        }
+                    >
+                        <button
+                            onClick={handlePrevious}
+                            disabled={currentPage === 1}
+                        >
+                            <i className="fa fa-angle-left"></i>
+                            <span>Previous</span>
+                        </button>
+                    </li>
+
+
+                    {/* Pages */}
+                    {Array.from(
+                        { length: totalPages },
+                        (_, index) => index + 1
+                    ).map((page) => (
+
+                        <li
+                            key={page}
+                            className={
+                                currentPage === page
+                                    ? "active"
+                                    : ""
+                            }
+                        >
+                            <button
+                                onClick={() =>
+                                    setCurrentPage(page)
+                                }
+                            >
+                                {page}
+                            </button>
+                        </li>
+
+                    ))}
+
+
+                    {/* Next */}
+                    <li
+                        className={
+                            currentPage === totalPages
+                                ? "disabled"
+                                : ""
+                        }
+                    >
+                        <button
+                            onClick={handleNext}
+                            disabled={
+                                currentPage === totalPages
+                            }
+                        >
+                            <span>Next</span>
+                            <i className="fa fa-angle-right"></i>
+                        </button>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+
+        {/* =========================
+            CSS
+        ========================== */}
+        <style>
+            {`
+
+            /* =================================
+               MAIN SECTION
+            ================================= */
+
+            .subject-section {
+                background: #f8f9fc;
+            }
+
+
+            /* =================================
+               HEADER
+            ================================= */
+
+            .section-label {
+                display: inline-block;
+                color: #ff6600;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 4px;
+                margin-bottom: 10px;
+                position: relative;
+            }
+
+            .section-label::before {
+                content: "";
+                display: inline-block;
+                width: 25px;
+                height: 3px;
+                background: #ff6600;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
+            .subject-heading {
+                font-size: 38px;
+                font-weight: 700;
+                color: #222;
+                margin-bottom: 10px;
+            }
+
+            .subject-subtitle {
+                color: #777;
+                font-size: 15px;
+                margin: 0;
+            }
+
+
+            /* =================================
+               TOOLBAR
+            ================================= */
+
+            .subject-toolbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #fff;
+                padding: 18px 20px;
+                border-radius: 10px 10px 0 0;
+                border: 1px solid #eee;
+                border-bottom: 0;
+            }
+
+            .records-control {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #555;
+                font-size: 14px;
+            }
+
+            .records-select {
+                width: 75px;
+                height: 38px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 5px 10px;
+                outline: none;
+            }
+
+            .records-select:focus {
+                border-color: #ff6600;
+                box-shadow: 0 0 0 2px rgba(255, 102, 0, .10);
+            }
+
+
+            /* =================================
+               SEARCH
+            ================================= */
+
+            .search-box {
+                width: 260px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                background: #f8f9fc;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                padding: 0 12px;
+            }
+
+            .search-box i {
+                color: #999;
+                margin-right: 8px;
+            }
+
+            .search-box input {
+                width: 100%;
+                border: 0;
+                outline: none;
+                background: transparent;
+                font-size: 14px;
+            }
+
+
+            /* =================================
+               TABLE CARD
+            ================================= */
+
+            .subject-table-card {
+                background: #fff;
+                border: 1px solid #eee;
+                border-radius: 0 0 10px 10px;
+                overflow: hidden;
+                box-shadow: 0 5px 25px rgba(0,0,0,.05);
+            }
+
+
+            /* =================================
+               TABLE
+            ================================= */
+
+            .subject-table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 850px;
+            }
+
+            .subject-table thead {
+                background: #ff6600;
+            }
+
+            .subject-table thead th {
+                color: #fff;
+                font-size: 13px;
+                font-weight: 600;
+                padding: 15px 14px;
+                border: none;
+                white-space: nowrap;
+            }
+
+            .subject-table tbody tr {
+                transition: all .2s ease;
+            }
+
+            .subject-table tbody tr:hover {
+                background: #fff8f3;
+            }
+
+            .subject-table tbody td {
+                padding: 16px 14px;
+                border-bottom: 1px solid #eee;
+                vertical-align: middle;
+                font-size: 14px;
+                color: #555;
+            }
+
+            .subject-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+
+            /* =================================
+               SERIAL
+            ================================= */
+
+            .serial-number {
+                width: 30px;
+                height: 30px;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                background: #fff1e8;
+                color: #ff6600;
+                border-radius: 50%;
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+
+            /* =================================
+               SUBJECT CODE
+            ================================= */
+
+            .subject-code {
+                display: inline-block;
+                background: #f1f4f8;
+                color: #555;
+                padding: 6px 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+
+            /* =================================
+               SUBJECT NAME
+            ================================= */
+
+            .subject-name {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #222;
+                font-weight: 600;
+                min-width: 180px;
+            }
+
+            .subject-icon {
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #fff1e8;
+                color: #ff6600;
+                border-radius: 8px;
+                font-size: 15px;
+            }
+
+
+            /* =================================
+               ACADEMIC BADGE
+            ================================= */
+
+            .academic-badge {
+                display: inline-block;
+                padding: 6px 12px;
+                background: #eaf7f0;
+                color: #198754;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+
+            /* =================================
+               DOCUMENT BUTTONS
+            ================================= */
+
+            .document-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 7px;
+                min-width: 300px;
+            }
+
+            .document-btn {
+                border: 0;
+                border-radius: 5px;
+                padding: 7px 10px;
+                color: #fff;
+                font-size: 11px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all .25s ease;
+                white-space: nowrap;
+            }
+
+            .document-btn:hover {
+                transform: translateY(-2px);
+            }
+
+            .syllabus-btn {
+                background: #0d6efd;
+            }
+
+            .syllabus-btn:hover {
+                background: #0b5ed7;
+            }
+
+            .assessment-btn {
+                background: #198754;
+            }
+
+            .assessment-btn:hover {
+                background: #157347;
+            }
+
+            .question-btn {
+                background: #dc3545;
+            }
+
+            .question-btn:hover {
+                background: #bb2d3b;
+            }
+
+            .no-document {
+                color: #999;
+                font-size: 12px;
+                font-style: italic;
+            }
+
+
+            /* =================================
+               NO DATA
+            ================================= */
+
+            .no-data {
+                text-align: center;
+                padding: 50px !important;
+            }
+
+            .no-data-content i {
+                font-size: 40px;
+                color: #ddd;
+                margin-bottom: 15px;
+            }
+
+            .no-data-content h5 {
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            .no-data-content p {
+                color: #999;
+                margin: 0;
+                font-size: 13px;
+            }
+
+
+            /* =================================
+               BOTTOM
+            ================================= */
+
+            .subject-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                gap: 15px;
+            }
+
+            .record-info {
+                color: #777;
+                font-size: 13px;
+            }
+
+            .record-info strong {
+                color: #333;
+            }
+
+
+            /* =================================
+               PAGINATION
+            ================================= */
+
+            .subject-pagination {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .subject-pagination button {
+                border: 1px solid #ddd;
+                background: #fff;
+                color: #555;
+                min-width: 36px;
+                height: 36px;
+                padding: 0 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all .2s ease;
+            }
+
+            .subject-pagination button:hover {
+                border-color: #ff6600;
+                color: #ff6600;
+            }
+
+            .subject-pagination li.active button {
+                background: #ff6600;
+                border-color: #ff6600;
+                color: #fff;
+            }
+
+            .subject-pagination li.disabled button {
+                opacity: .45;
+                cursor: not-allowed;
+            }
+
+
+            /* =================================
+               TABLET
+            ================================= */
+
+            @media (max-width: 991px) {
+
+                .subject-heading {
+                    font-size: 32px;
+                }
+
+                .subject-toolbar {
+                    padding: 15px;
+                }
+
+                .subject-table {
+                    min-width: 800px;
+                }
+
+            }
+
+
+            /* =================================
+               MOBILE
+            ================================= */
+
+            @media (max-width: 767px) {
+
+                .subject-section {
+                    padding-top: 40px !important;
+                    padding-bottom: 40px !important;
+                }
+
+                .subject-heading {
+                    font-size: 27px;
+                }
+
+                .subject-subtitle {
+                    font-size: 13px;
+                }
+
+                .subject-toolbar {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 15px;
+                    padding: 15px;
+                }
+
+                .records-control {
+                    justify-content: flex-start;
+                }
+
+                .search-box {
+                    width: 100%;
+                }
+
+                .subject-table-card {
+                    border-radius: 0 0 8px 8px;
+                }
+
+                .subject-table {
+                    min-width: 800px;
+                }
+
+                .subject-bottom {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .record-info {
+                    text-align: center;
+                }
+
+                .subject-pagination {
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+
+                .subject-pagination button {
+                    min-width: 34px;
+                    height: 34px;
+                }
+
+                .subject-pagination li:first-child span,
+                .subject-pagination li:last-child span {
+                    display: none;
+                }
+
+            }
+
+
+            /* =================================
+               SMALL MOBILE
+            ================================= */
+
+            @media (max-width: 480px) {
+
+                .section-label {
+                    font-size: 12px;
+                    letter-spacing: 3px;
+                }
+
+                .subject-heading {
+                    font-size: 24px;
+                }
+
+                .subject-table thead th,
+                .subject-table tbody td {
+                    padding: 12px 10px;
+                }
+
+                .document-buttons {
+                    min-width: 250px;
+                }
+
+            }
+
+            `}
+        </style>
+
+    </div>
+</div>
+
         </>
     );
 }
