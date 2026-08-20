@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
- 
+
 import { useParams } from "react-router-dom";
 import { getSubjects } from "./CourseServiceData";
 
 function Subject() {
-      const { slug } = useParams();
+    const { slug } = useParams();
     const [data, setData] = useState([]);
 
     useEffect(() => {
-         if (slug) {
-        loadSubjects(slug);
-         }
+        if (slug) {
+            loadSubjects(slug);
+        }
     }, [slug]);
 
     const loadSubjects = async (slug) => {
         try {
             const result = await getSubjects(slug);
- 
-            setData(result);
+
+            setData(result.filter(
+        (item) => item.is_active === true
+    ));
         } catch (error) {
             console.log(error);
         }
     };
-           console.log("Hello ",data);
+    console.log("Hello ", data);
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
@@ -197,8 +199,8 @@ function Subject() {
                                     <th>Sr. No.</th>
                                     <th>Subject Code</th>
                                     <th>Subject Name</th>
-                                     <th>Sem/Year</th>
-                                     <th>Documents</th>
+                                    <th>Sem/Year</th>
+                                    <th>Documents</th>
                                     {/* <th>Syllabus</th>
                                     <th>Assessment</th>
                                     <th>Question Papers</th> */}
@@ -227,59 +229,59 @@ function Subject() {
                                                 {course.subject_name}
                                             </td>
 
-                                            
+
 
                                             <td>
                                                 {course.academic_year_display}
                                             </td>
 
-<td>
-    <div className="row g-2">
+                                            <td>
+                                                <div className="row g-2">
 
-        {course.syllabus?.file?.trim() && (
-            <div className="col-md-4">
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm w-100"
-                    onClick={() =>
-                        window.open(course.syllabus.file, "_blank")
-                    }
-                >
-                    View Syllabus
-                </button>
-            </div>
-        )}
+                                                    {course.syllabus?.file?.trim() && (
+                                                        <div className="col-md-4">
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-primary btn-sm w-100"
+                                                                onClick={() =>
+                                                                    window.open(course.syllabus.file, "_blank")
+                                                                }
+                                                            >
+                                                                View Syllabus
+                                                            </button>
+                                                        </div>
+                                                    )}
 
-        {course.assessment?.file?.trim() && (
-            <div className="col-md-4">
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm w-100"
-                    onClick={() =>
-                        window.open(course.assessment.file, "_blank")
-                    }
-                >
-                    View Assessment
-                </button>
-            </div>
-        )}
+                                                    {course.assessment?.file?.trim() && (
+                                                        <div className="col-md-4">
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-primary btn-sm w-100"
+                                                                onClick={() =>
+                                                                    window.open(course.assessment.file, "_blank")
+                                                                }
+                                                            >
+                                                                View Assessment
+                                                            </button>
+                                                        </div>
+                                                    )}
 
-        {course.question_paper?.file?.trim() && (
-            <div className="col-md-4">
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm w-100"
-                    onClick={() =>
-                        window.open(course.question_paper.file, "_blank")
-                    }
-                >
-                    Question Papers
-                </button>
-            </div>
-        )}
+                                                    {course.question_paper?.file?.trim() && (
+                                                        <div className="col-md-4">
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-primary btn-sm w-100"
+                                                                onClick={() =>
+                                                                    window.open(course.question_paper.file, "_blank")
+                                                                }
+                                                            >
+                                                                Question Papers
+                                                            </button>
+                                                        </div>
+                                                    )}
 
-    </div>
-</td>
+                                                </div>
+                                            </td>
                                             {/* <td>
                                                   {course.syllabus.file?.trim() && (
                                                 <button

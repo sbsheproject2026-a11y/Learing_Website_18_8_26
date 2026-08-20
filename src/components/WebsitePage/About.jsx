@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getWebsiteContent } from './HomeService';
 
 function About() {
+    const [aboutus, setAboutUss] = useState([]);
+    const [recognitions, setRecognitionss] = useState([]);
+
+    useEffect(() => {
+        loadPageData();
+    }, []);
+
+    const loadPageData = async () => {
+        try {
+            const [aboutUsData, recognitionsData] =
+                await Promise.all([
+                    getWebsiteContent(10),   // Slider
+                    getWebsiteContent(20),   // About Us
+                    // getWebsiteContent(3),  // Courses
+                    // getWebsiteContent(8),  // Courses
+                ]);
+
+            setAboutUss(aboutUsData.filter(
+                (item) => item.is_active === true
+            ));
+            setRecognitionss(recognitionsData.filter(
+                (item) => item.is_active === true
+            ));
+            // setTotalcounts(totalcountsData);
+            // setWhyChosseUs(WhyChosseUsdata);
+
+        } catch (error) {
+            console.log("Page data error:", error);
+        }
+    };
     return (
         <>
 
@@ -8,19 +39,31 @@ function About() {
 
 
             {/* <!-- About Start --> */}
+
             <div className="container-fluid py-5">
                 <div className="container py-5">
                     <div className="row align-items-center">
                         <div className="col-lg-5">
-                            <img className="img-fluid rounded mb-4 mb-lg-0" src="/assets/img/Logo.png"alt="" />
+                            <img
+                                className="img-fluid rounded mb-4 mb-lg-0"
+                                src={aboutus?.[0]?.file}
+                                alt={aboutus?.[0]?.name || "Why SBSHE"}
+                            />
+
                         </div>
                         <div className="col-lg-7">
                             <div className="text-left mb-4">
                                 <h5 className="text-primary text-uppercase mb-3" style={{ letterSpacing: "5px" }}>About Us</h5>
-                                <h1>Innovative Way To Learn</h1>
+                                <h1>{aboutus?.[0]?.name}</h1>
                             </div>
-                            <p>Aliquyam accusam clita nonumy ipsum sit sea clita ipsum clita, ipsum dolores amet voluptua duo dolores et sit ipsum rebum, sadipscing et erat eirmod diam kasd labore clita est. Diam sanctus gubergren sit rebum clita amet, sea est sea vero sed et. Sadipscing labore tempor at sit dolor clita consetetur diam. Diam ut diam tempor no et, lorem dolore invidunt no nonumy stet ea labore, dolor justo et sit gubergren diam sed sed no ipsum. Sit tempor ut nonumy elitr dolores justo aliquyam ipsum stet</p>
-                         
+                            <div
+
+                                dangerouslySetInnerHTML={{
+                                    __html: aboutus?.[0]?.description || ""
+                                }}
+                            />
+
+
                         </div>
                     </div>
                 </div>
@@ -134,351 +177,581 @@ function About() {
                     </div>
                 </div>
             </div>
+
             {/* <!-- About End --> */}
             {/* <!-- About Start --> */}
 
-            <div className="container-fluid py-5">
-                <div className="container py-5">
+            <div className="container-fluid py-5 recognition-section">
+                <div className="container py-4">
 
-                    <div className="text-left mb-4">
-                        <h5
-                            className="text-primary text-uppercase mb-3"
-                            style={{ letterSpacing: "5px" }}
-                        >
-                             <span
-                                style={{
-                                    width: "25px",
-                                    height: "3px",
-                                    backgroundColor: "#f5a623",
-                                    display: "inline-block",
-                                    marginRight: "10px"
-                                }}
-                            ></span> Recognitions
-                        </h5>
+                    {/* =====================================
+            SECTION HEADER
+        ===================================== */}
 
-                        <h4>
+                    <div className="recognition-header text-center mb-5">
+
+                        <div className="recognition-label">
+
+                            <span className="recognition-line"></span>
+
+                            <span>
+                                Recognitions
+                            </span>
+
+                            <span className="recognition-line"></span>
+
+                        </div>
+
+                        <h2 className="recognition-title">
                             Trusted & Government Recognized
-                        </h4>
-                    </div>
-
-                    <div className="row">
-
-                        {/* CR MHRD */}
-                        <div className="col-lg col-md-6 mb-4">
-                            <div
-                                className="bg-white border rounded text-center p-3 h-100"
-                                style={{ minHeight: "123px" }}
-                            >
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle mx-auto mb-3"
-                                    style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        backgroundColor: "#f3f0e8",
-                                        fontSize: "22px"
-                                    }}
-                                >
-                                    🏛️
-                                </div>
-
-                                <h6 className="text-dark mb-0">
-                                    CR MHRD
-                                </h6>
-                            </div>
-                        </div>
-
-
-                        {/* NITI Aayog */}
-                        <div className="col-lg col-md-6 mb-4">
-                            <div
-                                className="bg-white border rounded text-center p-3 h-100"
-                                style={{ minHeight: "123px" }}
-                            >
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle mx-auto mb-3"
-                                    style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        backgroundColor: "#f3f0e8",
-                                        fontSize: "22px"
-                                    }}
-                                >
-                                    📜
-                                </div>
-
-                                <h6 className="text-dark mb-0">
-                                    NITI Aayog
-                                </h6>
-                            </div>
-                        </div>
-
-
-                        {/* NCT of Delhi */}
-                        <div className="col-lg col-md-6 mb-4">
-                            <div
-                                className="bg-white border rounded text-center p-3 h-100"
-                                style={{ minHeight: "123px" }}
-                            >
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle mx-auto mb-3"
-                                    style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        backgroundColor: "#f3f0e8",
-                                        fontSize: "22px"
-                                    }}
-                                >
-                                    🏢
-                                </div>
-
-                                <h6 className="text-dark mb-0">
-                                    NCT of Delhi
-                                </h6>
-                            </div>
-                        </div>
-
-
-                        {/* MSME */}
-                        <div className="col-lg col-md-6 mb-4">
-                            <div
-                                className="bg-white border rounded text-center p-3 h-100"
-                                style={{ minHeight: "123px" }}
-                            >
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle mx-auto mb-3"
-                                    style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        backgroundColor: "#f3f0e8",
-                                        fontSize: "22px"
-                                    }}
-                                >
-                                    📋
-                                </div>
-
-                                <h6 className="text-dark mb-0">
-                                    MSME (Udyam)
-                                </h6>
-                            </div>
-                        </div>
-
-
-                        {/* ISO Certified */}
-                        <div className="col-lg col-md-6 mb-4">
-                            <div
-                                className="bg-white border rounded text-center p-3 h-100"
-                                style={{ minHeight: "123px" }}
-                            >
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle mx-auto mb-3"
-                                    style={{
-                                        width: "48px",
-                                        height: "48px",
-                                        backgroundColor: "#f3f0e8",
-                                        fontSize: "22px"
-                                    }}
-                                >
-                                    ✅
-                                </div>
-
-                                <h6 className="text-dark mb-0">
-                                    ISO Certified
-                                </h6>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            {/* <!-- About End --> */}
-            <div className="container-fluid py-5" style={{ backgroundColor: "#fafaf9" }} hidden>
-                <div className="container py-3">
-
-                    {/* Heading */}
-                    <div className="mb-4">
-                        <div
-                            className="d-flex align-items-center mb-3"
-                            style={{
-                                color: "#f5a623",
-                                fontSize: "12px",
-                                fontWeight: "500",
-                                letterSpacing: "1px"
-                            }}
-                        >
-                            <span
-                                style={{
-                                    width: "25px",
-                                    height: "3px",
-                                    backgroundColor: "#f5a623",
-                                    display: "inline-block",
-                                    marginRight: "10px"
-                                }}
-                            ></span>
-
-                            FACULTIES
-                        </div>
-
-                        <h2
-                            style={{
-                                color: "#092d5c",
-                                fontSize: "28px",
-                                fontWeight: "700",
-                                marginBottom: "0"
-                            }}
-                        >
-                            10 Faculties, One Goal — Employability
                         </h2>
-                    </div>
 
-
-                    {/* Faculties */}
-                    <div className="row">
-
-                        {/* Paramedical */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🩺</div>
-                                <div className="faculty-title">Paramedical</div>
-                            </div>
-                        </div>
-
-                        {/* Information Technology */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">💻</div>
-                                <div className="faculty-title">Information Technology</div>
-                            </div>
-                        </div>
-
-                        {/* Veterinary */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🐾</div>
-                                <div className="faculty-title">Veterinary</div>
-                            </div>
-                        </div>
-
-                        {/* Fire & Safety */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🔥</div>
-                                <div className="faculty-title">Fire &amp; Safety</div>
-                            </div>
-                        </div>
-
-                        {/* Agriculture */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🌾</div>
-                                <div className="faculty-title">Agriculture</div>
-                            </div>
-                        </div>
-
-                        {/* Beauty & Wellness */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">💄</div>
-                                <div className="faculty-title">Beauty &amp; Wellness</div>
-                            </div>
-                        </div>
-
-                        {/* Apparel */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">👗</div>
-                                <div className="faculty-title">Apparel</div>
-                            </div>
-                        </div>
-
-                        {/* Sports */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🏅</div>
-                                <div className="faculty-title">Sports</div>
-                            </div>
-                        </div>
-
-                        {/* Teaching */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">📘</div>
-                                <div className="faculty-title">Teaching</div>
-                            </div>
-                        </div>
-
-                        {/* Yoga & Naturopathy */}
-                        <div className="col-lg-2-4 col-md-4 col-sm-6 mb-3">
-                            <div className="faculty-card">
-                                <div className="faculty-icon">🧘</div>
-                                <div className="faculty-title">Yoga &amp; Naturopathy</div>
-                            </div>
-                        </div>
+                        <p className="recognition-subtitle">
+                            Recognized by leading institutions and organizations
+                            for quality, trust and excellence.
+                        </p>
 
                     </div>
+
+
+                    {/* =====================================
+            RECOGNITION CARDS
+        ===================================== */}
+
+                    <div className="row justify-content-center">
+
+                        {recognitions?.map((item) => (
+
+                            <div
+                                className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4 d-flex"
+                                key={item.id}
+                            >
+
+                                <div className="recognition-card w-100">
+
+                                    {/* Icon */}
+
+                                    <div className="recognition-icon-wrapper">
+
+                                        <div className="recognition-icon">
+
+                                            {item.short_name || "🏛️"}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* Name */}
+
+                                    <h6 className="recognition-name">
+                                        {item.name}
+                                    </h6>
+
+
+                                    {/* Small bottom line */}
+
+                                    <div className="recognition-bottom-line"></div>
+
+                                </div>
+
+                            </div>
+
+                        ))}
+
+                    </div>
+
                 </div>
 
-                <style>{`
-        .col-lg-2-4 {
-            flex: 0 0 20%;
-            max-width: 20%;
+
+                {/* =====================================
+        CSS
+    ===================================== */}
+
+                <style>
+                    {`
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .recognition-section {
+            background: #f8f9fa;
         }
 
-        .faculty-card {
-            height: 100px;
-            background: #ffffff;
-            border: 1px solid #e1ddd5;
-            border-radius: 12px;
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .recognition-header {
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        .recognition-label {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s ease;
-        }
 
-        .faculty-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-        }
+            gap: 10px;
 
-        .faculty-icon {
-            font-size: 23px;
-            line-height: 1;
+            color: #ff6600;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 4px;
+
             margin-bottom: 12px;
         }
 
-        .faculty-title {
-            color: #002d62;
-            font-size: 13px;
-            font-weight: 500;
-            text-align: center;
+
+        .recognition-line {
+            width: 30px;
+
+            height: 3px;
+
+            background: #f5a623;
+
+            border-radius: 5px;
+
+            display: inline-block;
         }
+
+
+        .recognition-title {
+            color: #222222;
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+
+            line-height: 1.3;
+        }
+
+
+        .recognition-subtitle {
+            color: #777777;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+
+            margin: 0 auto;
+
+            max-width: 600px;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================= */
+
+        .recognition-card {
+            position: relative;
+
+            background: #ffffff;
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 14px;
+
+            padding: 25px 15px 20px;
+
+            min-height: 170px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.05);
+
+            transition:
+                transform 0.35s ease,
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+        }
+
+
+        .recognition-card:hover {
+            transform: translateY(-7px);
+
+            border-color: rgba(255, 102, 0, 0.25);
+
+            box-shadow:
+                0 14px 30px rgba(0, 0, 0, 0.10);
+        }
+
+
+        /* =========================================
+           ICON WRAPPER
+        ========================================= */
+
+        .recognition-icon-wrapper {
+            width: 68px;
+
+            height: 68px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff7ed,
+                    #f3f0e8
+                );
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease;
+        }
+
+
+        .recognition-card:hover
+        .recognition-icon-wrapper {
+            transform: scale(1.08);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0df,
+                    #f8e7d0
+                );
+        }
+
+
+        /* =========================================
+           ICON
+        ========================================= */
+
+        .recognition-icon {
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            line-height: 1;
+
+            color: #ff6600;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 3px 10px
+                rgba(0, 0, 0, 0.06);
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+           NAME
+        ========================================= */
+
+        .recognition-name {
+            color: #333333;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.45;
+
+            margin: 0;
+
+            min-height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        /* =========================================
+           BOTTOM LINE
+        ========================================= */
+
+        .recognition-bottom-line {
+            width: 30px;
+
+            height: 3px;
+
+            background: #ff6600;
+
+            border-radius: 10px;
+
+            margin-top: 12px;
+
+            transition:
+                width 0.35s ease;
+        }
+
+
+        .recognition-card:hover
+        .recognition-bottom-line {
+            width: 50px;
+        }
+
+
+        /* =========================================
+           LARGE DESKTOP
+        ========================================= */
+
+        @media (min-width: 1200px) {
+
+            .recognition-card {
+                min-height: 175px;
+
+                padding: 25px 15px;
+            }
+
+        }
+
+
+        /* =========================================
+           LAPTOP / DESKTOP
+        ========================================= */
+
+        @media (max-width: 1199px) {
+
+            .recognition-title {
+                font-size: 30px;
+            }
+
+            .recognition-card {
+                min-height: 165px;
+            }
+
+        }
+
+
+        /* =========================================
+           TABLET
+        ========================================= */
 
         @media (max-width: 991px) {
-            .col-lg-2-4 {
-                flex: 0 0 33.333%;
-                max-width: 33.333%;
+
+            .recognition-section {
+                padding-top: 50px !important;
+
+                padding-bottom: 40px !important;
             }
+
+            .recognition-title {
+                font-size: 28px;
+            }
+
+            .recognition-subtitle {
+                font-size: 14px;
+            }
+
+            .recognition-card {
+                min-height: 165px;
+
+                padding: 22px 12px;
+            }
+
+            .recognition-icon-wrapper {
+                width: 62px;
+
+                height: 62px;
+            }
+
+            .recognition-icon {
+                width: 47px;
+
+                height: 47px;
+
+                font-size: 23px;
+            }
+
         }
 
-        @media (max-width: 575px) {
-            .col-lg-2-4 {
-                flex: 0 0 50%;
-                max-width: 50%;
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 767px) {
+
+            .recognition-section {
+                padding-top: 40px !important;
+
+                padding-bottom: 30px !important;
             }
 
-            .faculty-card {
-                height: 105px;
+
+            .recognition-header {
+                padding: 0 10px;
+
+                margin-bottom: 30px !important;
             }
 
-            h2 {
-                font-size: 23px !important;
+
+            .recognition-label {
+                font-size: 11px;
+
+                letter-spacing: 3px;
+
+                gap: 7px;
             }
+
+
+            .recognition-line {
+                width: 20px;
+
+                height: 2px;
+            }
+
+
+            .recognition-title {
+                font-size: 24px;
+
+                line-height: 1.35;
+            }
+
+
+            .recognition-subtitle {
+                font-size: 13px;
+
+                line-height: 1.6;
+            }
+
+
+            /* 2 cards per row */
+
+            .recognition-card {
+                min-height: 155px;
+
+                padding: 18px 8px;
+
+                border-radius: 12px;
+            }
+
+
+            .recognition-icon-wrapper {
+                width: 58px;
+
+                height: 58px;
+
+                margin-bottom: 12px;
+            }
+
+
+            .recognition-icon {
+                width: 44px;
+
+                height: 44px;
+
+                font-size: 21px;
+            }
+
+
+            .recognition-name {
+                font-size: 12px;
+
+                min-height: 36px;
+            }
+
+
+            .recognition-bottom-line {
+                width: 25px;
+
+                margin-top: 9px;
+            }
+
         }
-    `}</style>
+
+
+        /* =========================================
+           SMALL MOBILE
+        ========================================= */
+
+        @media (max-width: 480px) {
+
+            .recognition-title {
+                font-size: 21px;
+            }
+
+
+            .recognition-subtitle {
+                font-size: 12px;
+            }
+
+
+            .recognition-card {
+                min-height: 145px;
+
+                padding: 16px 7px;
+            }
+
+
+            .recognition-icon-wrapper {
+                width: 54px;
+
+                height: 54px;
+
+                margin-bottom: 10px;
+            }
+
+
+            .recognition-icon {
+                width: 41px;
+
+                height: 41px;
+
+                font-size: 19px;
+            }
+
+
+            .recognition-name {
+                font-size: 11px;
+
+                line-height: 1.4;
+            }
+
+        }
+
+        `}
+                </style>
+
             </div>
-
-         
-
 
 
         </>

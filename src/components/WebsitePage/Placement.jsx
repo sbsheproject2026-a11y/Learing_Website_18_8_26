@@ -1,109 +1,40 @@
-  import React, { useState } from "react";
+  import React, { useEffect, useState } from "react";
+import { getWebsiteContent } from "./HomeService";
  
 
-function StudentSupport() {
+function  Placement () {
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
 
-    const newsEvents = [
-        {
-            id: 1,
-            title: "Admission Open for 2026",
-            type: "News",
-            date: "10 Aug 2026",
-            description:
-                "Admissions are now open for the academic session 2026.",
-        },
-        {
-            id: 2,
-            title: "Annual Sports Meet 2026",
-            type: "Event",
-            date: "15 Aug 2026",
-            description:
-                "Annual sports meet will be organized on campus.",
-        },
-        {
-            id: 3,
-            title: "Independence Day Celebration",
-            type: "Event",
-            date: "15 Aug 2026",
-            description:
-                "Special Independence Day celebration at the institute.",
-        },
-        {
-            id: 4,
-            title: "Scholarship Form Submission",
-            type: "News",
-            date: "20 Aug 2026",
-            description:
-                "Students can submit their scholarship applications.",
-        },
-        {
-            id: 5,
-            title: "Career Counselling Session",
-            type: "Event",
-            date: "25 Aug 2026",
-            description:
-                "Career counselling session for final year students.",
-        },
-        {
-            id: 6,
-            title: "Semester Examination Notice",
-            type: "News",
-            date: "01 Sep 2026",
-            description:
-                "Semester examination schedule has been announced.",
-        },
-        {
-            id: 7,
-            title: "Teacher's Day Celebration",
-            type: "Event",
-            date: "05 Sep 2026",
-            description:
-                "Teacher's Day celebration will be held on campus.",
-        },
-        {
-            id: 8,
-            title: "Placement Drive 2026",
-            type: "Event",
-            date: "10 Sep 2026",
-            description:
-                "Placement drive for eligible students.",
-        },
-        {
-            id: 9,
-            title: "New Course Announcement",
-            type: "News",
-            date: "15 Sep 2026",
-            description:
-                "New professional courses have been introduced.",
-        },
-        {
-            id: 10,
-            title: "Workshop on Web Development",
-            type: "Event",
-            date: "20 Sep 2026",
-            description:
-                "A practical workshop on modern web development.",
-        },
-        {
-            id: 11,
-            title: "Exam Result Announcement",
-            type: "News",
-            date: "25 Sep 2026",
-            description:
-                "Semester examination results will be published.",
-        },
-        {
-            id: 12,
-            title: "Campus Orientation Program",
-            type: "Event",
-            date: "01 Oct 2026",
-            description:
-                "Orientation program for newly admitted students.",
-        },
-    ];
+     const [placements, setPlacements] = useState([]);
+    
+        useEffect(() => {
+            loadPlacementData();
+        }, []);
+    
+       const loadPlacementData = async () => {
+        try {
+            const placementData = await getWebsiteContent(15);
+     
+            setPlacements(placementData.filter(
+        (item) => item.is_active === true
+    ));
+        } catch (error) {
+            console.log("Career data error:", error);
+        }
+    };
+    
+    
+       const newsEvents = placements.map((item) => ({
+        id: item.id,
+        title: item.name,
+       
+        date: item.date
+            ? item.date.split("-").reverse().join("-")
+            : "",
+        description: item.description,
+    }));
 
     // =========================
     // SEARCH
@@ -182,48 +113,7 @@ function StudentSupport() {
     return (
 <>
  
- <style>{`
-                .blink-badge {
-                    display: inline-block;
-                    animation: blinkBadge 1.2s ease-in-out infinite;
-                }
-
-                @keyframes blinkBadge {
-                    0% {
-                        opacity: 1;
-                    }
-
-                    50% {
-                        opacity: 0.35;
-                    }
-
-                    100% {
-                        opacity: 1;
-                    }
-                }
-
-                .news-event-table th {
-                    white-space: nowrap;
-                }
-
-                .news-event-table td {
-                    vertical-align: middle;
-                }
-
-                .news-event-description {
-                    min-width: 300px;
-                }
-
-                @media (max-width: 768px) {
-                    .news-event-description {
-                        min-width: 250px;
-                    }
-
-                    .pagination {
-                        justify-content: flex-start !important;
-                    }
-                }
-            `}</style>
+ 
 
         <div className="container-fluid py-5">
             <div className="container pt-5 pb-3">
@@ -238,10 +128,10 @@ function StudentSupport() {
                         className="text-primary text-uppercase mb-3"
                         style={{ letterSpacing: "5px" }}
                     >
-                        News & Events
+                    Placement Opportunities
                     </h5>
 
-                    <h1>Latest News & Events</h1>
+                  <h1>Latest Placement Updates</h1>
 
                 </div>
 
@@ -321,7 +211,7 @@ function StudentSupport() {
                             <tr>
                                 <th>Sr. No.</th>
                                 <th>Title</th>
-                                <th>Type</th>
+                              
                                 <th>Date</th>
                                 <th>Description</th>
                                 {/* <th>View</th> */}
@@ -349,19 +239,7 @@ function StudentSupport() {
                                             TYPE - BLINKING BADGE
                                         ========================== */}
 
-                                        <td>
-
-                                            <span
-                                                className={`badge blink-badge ${
-                                                    item.type === "Event"
-                                                        ? "bg-success text-white"
-                                                        : "bg-primary text-white"
-                                                }`}
-                                            >
-                                                {item.type}
-                                            </span>
-
-                                        </td>
+                                         
 
                                         <td>
                                             {item.date}
@@ -531,4 +409,4 @@ function StudentSupport() {
     );
 }
 
-export default StudentSupport;
+export default  Placement ;

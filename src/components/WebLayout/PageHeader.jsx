@@ -9,7 +9,8 @@ const pageNames = {
     "/department": "Department",
     "/news-events": "News & Events",
     "/contact-us": "Contact Us",
-    "/student-support": "Student Support",
+    "/career": "Career",
+    "/placement": "Placement",
     "/course-details": "Course Details",
     "/subject-details": "Subject Details",
 };

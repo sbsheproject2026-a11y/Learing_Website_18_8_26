@@ -48,7 +48,9 @@ function CourseDeails() {
     const loadCourses = async (slug) => {
         try {
             const result = await getCourses(slug);
-            setData(result);
+            setData(result.filter(
+        (item) => item.is_active === true
+    ));
 
         } catch (error) {
             console.log(error);

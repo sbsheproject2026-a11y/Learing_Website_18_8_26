@@ -1,7 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getWebsiteContent } from '../WebsitePage/HomeService';
 
 function Footer() {
+    const [contacts, setContacts] = useState([]);
+
+    useEffect(() => {
+        loadContactData();
+    }, []);
+
+    const loadContactData = async () => {
+        try {
+            const [contactsData] =
+                await Promise.all([
+                    getWebsiteContent(18),
+
+                ]);
+
+            setContacts(contactsData.filter(
+        (item) => item.is_active === true
+    ));
+
+
+        } catch (error) {
+            console.log("Page data error:", error);
+        }
+    };
     return (
         <>
 
@@ -11,11 +35,14 @@ function Footer() {
                 <div className="row pt-5">
                     <div className="col-lg-7 col-md-12">
                         <div className="row">
-                            <div className="col-md-6 mb-5">
+                            <div className="col-md-7 mb-5">
                                 <h5 className="text-primary text-uppercase mb-4" style={{ letterSpacing: "5px" }}>Get In Touch</h5>
-                                <p><i className="fa fa-map-marker-alt mr-2"></i>New Delhi</p>
-                                <p><i className="fa fa-phone-alt mr-2"></i>+91 1122 334455</p>
-                                <p><i className="fa fa-envelope mr-2"></i>info@example.com</p>
+                                <div style={{ fontSize: "15px" }}
+                                    dangerouslySetInnerHTML={{
+                                        __html: contacts?.[0]?.description || ""
+                                    }}
+                                />
+
                                 <div className="d-flex justify-content-start mt-4">
                                     <Link className="btn btn-outline-light btn-square mr-2" to="/"><i className="fab fa-youtube"></i></Link>
                                     <Link className="btn btn-outline-light btn-square mr-2" to="/"><i className="fab fa-facebook-f"></i></Link>
@@ -23,17 +50,17 @@ function Footer() {
                                     <Link className="btn btn-outline-light btn-square" to="/"><i className="fab fa-instagram"></i></Link>
                                 </div>
                             </div>
-                            <div className="col-md-6 mb-5">
+                            <div className="col-md-5 mb-5">
                                 <h5 className="text-primary text-uppercase mb-4" style={{ letterSpacing: "5px" }}>Usefull Links</h5>
                                 <div className="d-flex flex-column justify-content-start">
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>About</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Syllabus</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Books</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Assessment</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Career</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Placement</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>News/Event</Link>
-                                    <Link className="text-white mb-2" to="/"><i className="fa fa-angle-right mr-2"></i>Contact</Link>
+                                    <Link className="text-white mb-2" to="/about-us"><i className="fa fa-angle-right mr-2"></i>About</Link>
+                                    <Link className="text-white mb-2" to="/department"><i className="fa fa-angle-right mr-2"></i>Syllabus</Link>
+ 
+                                    <Link className="text-white mb-2" to="/department"><i className="fa fa-angle-right mr-2"></i>Assessment</Link>
+                                    <Link className="text-white mb-2" to="/career"><i className="fa fa-angle-right mr-2"></i>Career</Link>
+                                    <Link className="text-white mb-2" to="/placement"><i className="fa fa-angle-right mr-2"></i>Placement</Link>
+                                    <Link className="text-white mb-2" to="/news-events"><i className="fa fa-angle-right mr-2"></i>News/Event</Link>
+                                    <Link className="text-white mb-2" to="/contact-us"><i className="fa fa-angle-right mr-2"></i>Contact</Link>
                                 </div>
                             </div>
                         </div>
